@@ -14,3 +14,6 @@ I have used Recycler View to show list of contacts, and I was going to add funct
 Unfortunately, I could not done the part yet, but if I refer to a project which I previously done, I can complete that part.
 
 I know how to upgrade a profile of RecyclerView, but I was not able to complete that part due to time.
+
+Screenshots
+[screenshots.docx](https://github.com/Gihoon-Kim/AddressBook/files/7355779/screenshots.docx)
