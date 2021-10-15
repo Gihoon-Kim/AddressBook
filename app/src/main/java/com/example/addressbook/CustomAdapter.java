@@ -21,10 +21,12 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
-    private ArrayList<Contacts> arrayList;
+    private ArrayList<Contact> arrayList = new ArrayList<Contact>();
     private Context context;
 
-    public CustomAdapter(ArrayList<Contacts> arrayList, Context context) {
+    OnContactItemClickListener listener;
+
+    public CustomAdapter(ArrayList<Contact> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -70,10 +72,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             }
         });
 
-        holder.tv_FirstName.setText(arrayList.get(position).getFirstName());
-        holder.tv_LastName.setText(arrayList.get(position).getLastName());
-        holder.tv_Email.setText(arrayList.get(position).getEmail());
-        holder.tv_PhoneNumber.setText(String.valueOf(arrayList.get(position).getPhoneNumber()));
+        holder.onBind(arrayList.get(position));
     }
 
     public static byte[] binaryStringToByteArray(String s) {
@@ -95,9 +94,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         return total;
     }
 
+    public void setOnItemClickListener(OnContactItemClickListener listener) {
+
+        this.listener = listener;
+    }
+
     @Override
     public int getItemCount() {
         return (arrayList != null ? arrayList.size() : 0);
+    }
+
+    public Contact getItem(int position) {
+
+        return arrayList.get(position);
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -116,6 +125,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             this.tv_LastName = itemView.findViewById(R.id.tv_LastName);
             this.tv_Email = itemView.findViewById(R.id.tv_Email);
             this.tv_PhoneNumber = itemView.findViewById(R.id.tv_PhoneNumber);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    if (listener != null) {
+
+                        listener.onItemClick(CustomViewHolder.this, v, pos);
+                    }
+                }
+            });
+        }
+
+        void onBind(Contact contact) {
+
+            tv_FirstName.setText(contact.getFirstName());
+            tv_LastName.setText(contact.getLastName());
+            tv_Email.setText(contact.getEmail());
+            tv_PhoneNumber.setText(contact.getPhoneNumber());
         }
     }
 }

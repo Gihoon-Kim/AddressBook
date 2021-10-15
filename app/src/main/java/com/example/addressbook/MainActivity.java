@@ -24,9 +24,9 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private CustomAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Contacts> arrayList;
+    private ArrayList<Contact> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 arrayList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    Contacts contacts = snapshot.getValue(Contacts.class);
-                    arrayList.add(contacts);
+                    Contact contact = snapshot.getValue(Contact.class);
+                    arrayList.add(contact);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new CustomAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener((holder, view, position) -> {
+
+            Contact contact = adapter.getItem(position);
+            Intent updateIntent = new Intent(MainActivity.this, UpdateContact.class);
+        });
     }
 
     @OnClick(R.id.btn_AddContact)
@@ -101,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
                 arrayList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    Contacts contacts = snapshot.getValue(Contacts.class);
-                    arrayList.add(contacts);
+                    Contact contact = snapshot.getValue(Contact.class);
+                    arrayList.add(contact);
                 }
                 adapter.notifyDataSetChanged();
             }
